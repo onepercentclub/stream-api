@@ -31,7 +31,7 @@ class Messages(object):
     @cherrypy.expose
     @cherrypy.tools.json_in()
     def POST(self):
-        result = mongo.put_message(cherrypy.request.json)
+        result = mongo.post_message(cherrypy.request.json)
         return "Success"    
 
     exposed = True
@@ -57,7 +57,7 @@ class Donations(object):
 
             # save the raw message
             message['raw'] = item
-            result = mongo.put_message(message)
+            result = mongo.post_message(message)
 
         return "Success"
     exposed = True
