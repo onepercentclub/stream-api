@@ -38,9 +38,4 @@ def put_message(message):
     return message_id
 
 def to_string(message):
-    #return "- source: {0} \n- created: {1} \n- text: {2} \n- tags: {3}".format(message["source"], message["created"], message["text"], message["tags"])
-    result = "- Source: %s <br />" %message['source']
-    result += "- Text: %s <br />" %message['text']
-    result += "- Tags: %s <br />" "".join(message["tags"])
-    return result
-    #return "- source: {0} \n- text: {2} \n- tags: {3}".format(message["source"], message["text"], message["tags"])
+    return message['text']
