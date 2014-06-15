@@ -30,12 +30,15 @@ def get_messages_collection():
     return db.messages
 
 # This function store a message into the collection messages
-def post_message(message):
-    if not get_messages_collection().find_one({'remote_id': message['remote_id']}):
-        message['created'] = datetime.datetime.utcnow() 
-        messages = get_messages_collection()
-        message_id = messages.insert(message)
-        return message_id
+def post_message(message, uniqueField=''):
+    messages = get_messages_collection()
+    # If uniqueField set then only post if uniqueField doesn't exist in db
+    if len(uniqueField) and message.has_key(uniqueField) and messages.find_one({uniqueField: message[uniqueField]}):
+        return False
+
+    message['created'] = datetime.datetime.utcnow()
+    message_id = messages.insert(message)
+    return True
 
 def to_string(message):
     return message['text']

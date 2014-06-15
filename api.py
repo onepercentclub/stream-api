@@ -1,6 +1,8 @@
 import cherrypy
 import mongo
 
+from utils import append_value, path_value
+
 class Root:
     def index(self):
 	    return "Hello, world!"
@@ -42,8 +44,9 @@ class Donations(object):
     @cherrypy.tools.json_in()
     def POST(self):
         json = cherrypy.request.json
+        count = 0
         for item in json['results']:
-            #import ipdb; ipdb.set_trace()
+            # import ipdb; ipdb.set_trace()
             message = {}
 
             if item['user']:
@@ -55,12 +58,24 @@ class Donations(object):
             message['source'] = 'onepercentsite'
             message['type'] = 'donations'
 
+            # Populate the tags 
+            tags = []
+            append_value(tags, item, 'project.country.name')
+            message['tags'] = tags
+
             # save the raw message
             message['raw'] = item
             result = mongo.post_message(message)
 
-        return "Success"
+            if result:
+                count += 1
+
+        if count > 0:
+            return "Created {0} records.".format(count)
+        else:
+            return "No records created."
     exposed = True
+
 
 if __name__ == '__main__':
     cherrypy.tree.mount(
