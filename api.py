@@ -46,7 +46,9 @@ class TwitterMentions(object):
         message = {}
 
         if json['user']:
+            message['user'] = {}
             message['title'] = json['user']['screen_name']
+            message['user']['profile_picture'] = json['user']['profile_background_image_url_https']
         message['text'] = json['text']
         message['remote_id'] = json['id']
         message['source'] = 'twitter'
