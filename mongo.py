@@ -32,6 +32,7 @@ def get_messages_collection():
 # This function store a message into the collection messages
 def post_message(message, uniqueField=''):
     messages = get_messages_collection()
+
     # If uniqueField set then only post if uniqueField doesn't exist in db
     if len(uniqueField) and message.has_key(uniqueField) and messages.find_one({uniqueField: message[uniqueField]}):
         return False

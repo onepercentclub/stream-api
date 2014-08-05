@@ -57,7 +57,7 @@ class TwitterMentions(object):
 
         # save the raw message
         message['raw'] = json
-        result = mongo.post_message(message)
+        result = mongo.post_message(message, 'remote_id')
         return 'Success'
 
     exposed = True
@@ -89,7 +89,7 @@ class Donations(object):
 
             # save the raw message
             message['raw'] = item
-            result = mongo.post_message(message)
+            result = mongo.post_message(message, 'remote_id')
 
             if result:
                 count += 1
