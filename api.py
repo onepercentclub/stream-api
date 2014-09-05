@@ -69,8 +69,14 @@ class Donations(object):
     def POST(self):
         json = cherrypy.request.json
         count = 0
+        old_messages = mongo.get_messages_collection()
         for item in json['results']:
-            # import ipdb; ipdb.set_trace()
+
+            # If the donation is already in db then skip
+            result = old_messages.find_one({"remote_id": item['id'], "type": "donations"})
+            if result:
+                break
+
             message = {}
 
             if item['user']:
